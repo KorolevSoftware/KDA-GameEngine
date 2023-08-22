@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(KDA-GameEngine CXX)
 
 set(CMAKE_CXX_STANDARD 20)
-
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 include(FetchContent)
 
 if(MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
@@ -27,21 +27,25 @@ set(KDA_HEADERS
     ${KDA_INCLUDES}/kda_window.h
     ${KDA_INCLUDES}/kda_logging.h
     ${KDA_INCLUDES}/kda_graphics.h
-    ${KDA_INCLUDES}/kda_scripts.h
 )
 
 set(my_list ddd)
 
-function(append value)
-    message(${value})
-    list(APPEND my_list ${value})
-    message(${my_list})
-endfunction()
-
 message(${my_list})
 
-add_subdirectory(engine)
-add_subdirectory(extensions)
+function(add_to_list value)
+    block(PROPAGATE my_list)
+        list(APPEND my_list value)
+    endblock()
+endfunction()
+
+add_subdirectory(engine/core/scripts)
+add_subdirectory(engine/core/window)
+add_subdirectory(engine/core/logging)
+add_subdirectory(engine/core/graphics)
+add_subdirectory(engine/core/sprite)
+
+
 message(${my_list})
 set(SOURCES
   engine/engine.cpp
@@ -62,4 +66,5 @@ target_link_libraries(${PROJECT_NAME}
     KDA::logging
     KDA::graphics
     KDA::scripts
+    KDA::sprite
 )

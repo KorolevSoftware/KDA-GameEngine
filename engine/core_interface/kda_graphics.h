@@ -2,25 +2,26 @@
 #include <cstdint>
 #include <span>
 #include <array>
-
+#include <vector>
+#include <list>
 namespace kdaGraphics {
 
 	enum class AdapterType {
-		NONE,
-		OPENGL,
-		OPENGLES,
-		VULKAN,
-		DIRECTX9,
-		DIRECTX11,
-		DIRECTX12,
-		METAL,
-		COUNT
+		None,
+		OpenGL,
+		OpenGLES,
+		Vulkan,
+		DirectX9,
+		DirectX11,
+		DirectX12,
+		Metal,
+		Count
 	};
 
 	enum class AttribType {
-		FLOAT,
-		BYTE,
-		INT
+		Float,
+		Byte,
+		Int
 	};
 
 	enum class Clear {
@@ -30,17 +31,43 @@ namespace kdaGraphics {
 	};
 
 	enum class Attrib {
-		POSITION,
-		NORMAL,
-		TANGENT,
-		BITANGENT,
-		COLOR0,
-		Color1,
-		Color2,
-		Color3,
-		INDEXES,
-		WEIGHT,
-		TEXCOORD0
+		Position,  //!< a_position
+		Normal,    //!< a_normal
+		Tangent,   //!< a_tangent
+		Bitangent, //!< a_bitangent
+		Color0,    //!< a_color0
+		Color1,    //!< a_color1
+		Color2,    //!< a_color2
+		Color3,    //!< a_color3
+		Indices,   //!< a_indices
+		Weight,    //!< a_weight
+		TexCoord0, //!< a_texcoord0
+		TexCoord1, //!< a_texcoord1
+		TexCoord2, //!< a_texcoord2
+		TexCoord3, //!< a_texcoord3
+		TexCoord4, //!< a_texcoord4
+		TexCoord5, //!< a_texcoord5
+		TexCoord6, //!< a_texcoord6
+		TexCoord7, //!< a_texcoord7
+
+		Count
+	};
+
+	using Shader = uint32_t;
+	using BufferVertex = uint32_t;
+	using BufferIndex = uint32_t;
+	using Program = uint32_t;
+	using Texture = uint32_t;
+
+	enum class TextureFormat {
+		BGRA8,
+		RGB8
+	};
+
+	enum class ShaderType {
+		Vertex,
+		Pixel,
+		Compute
 	};
 
 	struct VertexLayout {
@@ -51,7 +78,7 @@ namespace kdaGraphics {
 	};
 
 	struct BufferLayoutDeclaration {
-		std::array<VertexLayout, 5> declaration;
+		std::list<VertexLayout> declaration;
 	};
 
 	// Main Function
@@ -61,11 +88,18 @@ namespace kdaGraphics {
 
 	// Graphics functions
 	void setViewport(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
-	void setClearColor(std::initializer_list<Clear> flags, uint32_t rgba, float depth, uint8_t stencil);
+	void setClearColor(std::span<Clear> flags, uint32_t rgba, float depth, uint8_t stencil);
+	void setVertexBuffer(BufferVertex buffer);
+	void setIndexBuffer(BufferIndex buffer);
+	void setProgram(Program program);
 	void drawArray();
 	void drawElements();
-	void createBuffer(const BufferLayoutDeclaration & declaration, std::span<const std::byte> data);
-	void createIndexBuffer(std::span<const std::byte> data);
+	Program createProgramGraphic(Shader vertex, Shader pixel);
+	Program createProgramCompute(Shader compute);
+	const Shader createShader(ShaderType type, std::span<const std::byte> shaderBin);
+	BufferVertex createVertexBuffer(const BufferLayoutDeclaration & declaration, std::span<float> data);
+	BufferIndex createIndexBuffer(std::span<const std::byte> data);
+	Texture createTexture(int32_t width, int32_t height, TextureFormat format, std::span<const std::byte> data);
 	void setViewProjection(std::span<const float> view, std::span<const float> projection);
 	void setTransform(std::span<const float> transform);
 }

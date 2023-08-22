@@ -15,13 +15,22 @@ FetchContent_Declare(sol2
 
 FetchContent_MakeAvailable(sol2)
 
+file(GLOB public_interface ${CMAKE_CURRENT_SOURCE_DIR}/public_interface/*.h)
+# file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/public_interface/*.h)
+message(${public_interface})
 set(SOURCES
 	kda_scripts.cpp
 )
 
-add_library(${PROJECT_NAME} STATIC ${SOURCES}) # initialized below
-add_library(KDA::scripts ALIAS ${PROJECT_NAME})
-message("${LUABRIDGE_HEADERS}")
+
+
+source_group("Public interface" FILES ${public_interface})
+
+add_library(${PROJECT_NAME} STATIC ${SOURCES} ${public_interface}) # initialized below
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${KDA_INCLUDES})
- 
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/public_interface)
 target_link_libraries(${PROJECT_NAME} lua::lib lua::header sol2::sol2)
+
+add_library(KDA::scripts ALIAS ${PROJECT_NAME})
+

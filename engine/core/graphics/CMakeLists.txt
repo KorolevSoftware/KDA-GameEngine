@@ -26,4 +26,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${bgfx_SOURCE_DIR}/bx/include
   ${bgfx_SOURCE_DIR}/bimg/include)
 
-target_link_libraries(${PROJECT_NAME} bgfx)
+target_link_libraries(${PROJECT_NAME} bgfx KDA::scripts)

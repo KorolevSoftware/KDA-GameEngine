@@ -26,6 +26,3 @@ add_library(lua-header INTERFACE)
 target_include_directories(lua-header INTERFACE ${lua_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} INTERFACE lua-header)
 add_library(lua::header ALIAS lua-header)
-
-append(lua)
-message(${my_list})
