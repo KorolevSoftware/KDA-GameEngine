@@ -135,7 +135,7 @@ namespace kdaGraphics {
         return bgfx::createVertexBuffer(mem, layout).idx;
     }
 
-    BufferIndex createIndexBuffer(std::span<const std::byte> data) {
+    BufferIndex createIndexBuffer(std::span<uint32_t> data) {
         return bgfx::createIndexBuffer(bgfx::makeRef(data.data(), data.size() * sizeof(data[0]))).idx;
     }
 

@@ -98,7 +98,7 @@ namespace kdaGraphics {
 	Program createProgramCompute(Shader compute);
 	const Shader createShader(ShaderType type, std::span<const std::byte> shaderBin);
 	BufferVertex createVertexBuffer(const BufferLayoutDeclaration & declaration, std::span<float> data);
-	BufferIndex createIndexBuffer(std::span<const std::byte> data);
+	BufferIndex createIndexBuffer(std::span<uint32_t> data);
 	Texture createTexture(int32_t width, int32_t height, TextureFormat format, std::span<const std::byte> data);
 	void setViewProjection(std::span<const float> view, std::span<const float> projection);
 	void setTransform(std::span<const float> transform);
